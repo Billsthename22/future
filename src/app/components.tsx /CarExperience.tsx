@@ -1,18 +1,102 @@
-'use client';
+"use client";
 
+import React, { Suspense, useRef, useState, useEffect, forwardRef } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
 import { Orbitron } from "next/font/google";
 import { motion } from "framer-motion";
+import * as THREE from "three";
 
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
+// ✅ McLaren Model with forwardRef and dynamic scaling
+interface McLarenModelProps {
+  targetSize: number;
+}
+
+const McLarenModel = forwardRef<THREE.Group, McLarenModelProps>(({ targetSize }, ref) => {
+  const { scene } = useGLTF("/models/Mclaren/scene.gltf");
+
+  useEffect(() => {
+    if (!ref || !("current" in ref) || !ref.current) return;
+
+    const bbox = new THREE.Box3().setFromObject(ref.current);
+    const size = new THREE.Vector3();
+    bbox.getSize(size);
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scaleFactor = targetSize / maxDim;
+    ref.current.scale.setScalar(scaleFactor);
+
+    const newBbox = new THREE.Box3().setFromObject(ref.current);
+    const newSize = new THREE.Vector3();
+    newBbox.getSize(newSize);
+    console.log(`🔧 Adjusted model size to target ${targetSize}:`, newSize);
+  }, [targetSize, ref]);
+
+  return <primitive ref={ref} object={scene} position={[0, -1, 0]} rotation={[0, Math.PI, 0]} />;
+});
+McLarenModel.displayName = "McLarenModel";
+
+useGLTF.preload("/models/Mclaren/scene.gltf");
+
+// ✅ Fit camera to object
+function FitCameraToObject({ objectRef }: { objectRef: React.RefObject<THREE.Group | null> }) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (!objectRef.current) return;
+
+    const bbox = new THREE.Box3().setFromObject(objectRef.current);
+    const size = new THREE.Vector3();
+    bbox.getSize(size);
+    const center = new THREE.Vector3();
+    bbox.getCenter(center);
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const fov = camera.fov * (Math.PI / 180);
+    let distance = maxDim / (2 * Math.tan(fov / 2));
+    distance *= 1.5; // padding
+
+    camera.position.set(center.x, center.y + size.y / 2, center.z + distance);
+    camera.lookAt(center);
+    camera.updateProjectionMatrix();
+  }, [camera, objectRef]);
+
+  return null;
+}
+
+// ✅ Main CarExperience Component
 export default function CarExperience() {
+  const [carSize, setCarSize] = useState(20);
+  const carRef = useRef<THREE.Group | null>(null);
+  const controlsRef = useRef<any>(null);
+
+  // Log model size on zoom/rotate/pan
+  useEffect(() => {
+    if (!controlsRef.current || !carRef.current) return;
+
+    const controls = controlsRef.current;
+
+    const logSize = () => {
+      if (!carRef.current) return;
+      const bbox = new THREE.Box3().setFromObject(carRef.current);
+      const size = new THREE.Vector3();
+      bbox.getSize(size);
+      console.log("🔧 Current model size:", size);
+    };
+
+    controls.addEventListener("change", logSize);
+    return () => controls.removeEventListener("change", logSize);
+  }, []);
+
   return (
-    <section className="relative bg-black text-white py-24 overflow-hidden">
-      {/* Background glow */}
+    <section className="relative w-full h-screen bg-black flex flex-col items-center justify-center overflow-hidden">
+      {/* Background overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.2),transparent_70%)]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent" />
 
-      {/* Content */}
+      {/* Header text */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
@@ -29,29 +113,41 @@ export default function CarExperience() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className={`text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed ${orbitron.className}`}
         >
-          Interact with lifelike 3D models of our next-generation supercars. Rotate, explore, and feel the adrenaline — all from your screen.
+          Interact with lifelike 3D models of our next-generation supercars.
         </motion.p>
 
-        {/* Placeholder for 3D viewer */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="relative w-full h-96 bg-gradient-to-b from-gray-900 to-black rounded-3xl border border-red-800/30 flex items-center justify-center shadow-[0_0_30px_rgba(255,0,0,0.3)]"
-        >
-          <p className="text-gray-500 text-sm md:text-base tracking-widest uppercase">
-            [ 3D / 360° Car Model Viewer Coming Soon ]
-          </p>
-        </motion.div>
+        {/* Slider */}
+        <input
+          type="range"
+          min="1"
+          max="50"
+          step="0.1"
+          value={carSize}
+          onChange={(e) => setCarSize(parseFloat(e.target.value))}
+          className="w-64 mt-4"
+        />
+        <p className="text-white mt-2">Target Car Size: {carSize}</p>
+      </div>
 
-        {/* Button */}
-        <motion.button
-          whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255,0,0,0.5)" }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className={`mt-10 bg-red-600 text-white px-10 py-3 rounded-full font-semibold tracking-wider uppercase ${orbitron.className}`}
-        >
-          Step Inside
-        </motion.button>
+      {/* 3D Model Canvas with aesthetic border */}
+      <div className="relative w-full max-w-5xl h-96 md:h-[28rem] bg-gradient-to-b from-gray-900 to-black rounded-3xl border border-red-800/30 flex items-center justify-center shadow-[0_0_30px_rgba(255,0,0,0.3)]">
+        <Canvas shadows className="w-full h-full rounded-3xl">
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={1.2} />
+          <Suspense fallback={null}>
+            <McLarenModel ref={carRef} targetSize={carSize} />
+            <FitCameraToObject objectRef={carRef} />
+            <Environment preset="night" />
+            <OrbitControls
+              ref={controlsRef}
+              enableZoom
+              maxDistance={100}
+              minDistance={5}
+              autoRotate
+              autoRotateSpeed={1}
+            />
+          </Suspense>
+        </Canvas>
       </div>
     </section>
   );

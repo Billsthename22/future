@@ -68,7 +68,45 @@ const Ferrari = ({
       if (progress >= 1) onReachedFront();
     }
   });
-
+  const Ferrari = ({
+    carRef,
+    onReachedFront,
+  }: {
+    carRef: React.RefObject<THREE.Group | null>;
+    onReachedFront: () => void;
+  }) => {
+    const { scene } = useGLTF("/models/ferrari/scene.gltf");
+    const startTime = useRef(performance.now());
+  
+    useFrame(() => {
+      if (carRef.current) {
+        const elapsed = (performance.now() - startTime.current) / 1000;
+        const progress = Math.min(elapsed / 2, 1); // animation duration 2s
+        carRef.current.position.z = THREE.MathUtils.lerp(5, 0, progress);
+  
+        if (progress >= 1) {
+          // ✅ Log bounding box size once car reaches the front
+          const bbox = new THREE.Box3().setFromObject(carRef.current);
+          const size = new THREE.Vector3();
+          bbox.getSize(size);
+          console.log("📏 Ferrari final size:", size);
+  
+          onReachedFront();
+        }
+      }
+    });
+  
+    return (
+      <primitive
+        ref={carRef}
+        object={scene}
+        scale={1.5}           // keep your current scale
+        position={[0, -0.5, 5]} // current position
+        rotation={[0, Math.PI, 0]} // current rotation
+      />
+    );
+  };
+  
   return (
     <primitive
       ref={carRef}
