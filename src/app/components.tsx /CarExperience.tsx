@@ -109,7 +109,7 @@ export default function CarExperience() {
           transition={{ duration: 0.8 }}
           className={`text-4xl md:text-6xl font-extrabold mb-6 tracking-wider uppercase ${orbitron.className}`}
         >
-          The <span className="text-red-600">Car Experience</span>
+          The <span className="text-red-600">The Car Experience</span>
         </motion.h2>
 
         <motion.p
@@ -118,7 +118,7 @@ export default function CarExperience() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className={`text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed ${orbitron.className}`}
         >
-          Interact with lifelike 3D models of our next-generation supercars.
+        Interact with lifelike 3D models of our next-generation supercars. Rotate, explore, and feel the adrenaline — all from your screen.
         </motion.p>
 
         {/* Slider */}
