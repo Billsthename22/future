@@ -123,15 +123,16 @@ export default function CarExperience() {
 
         {/* Slider */}
         <input
-          type="range"
-          min="1"
-          max="50"
-          step="0.1"
-          value={carSize}
-          onChange={(e) => setCarSize(parseFloat(e.target.value))}
-          className="w-64 mt-4"
-        />
-        <p className="text-white mt-2">Target Car Size: {carSize}</p>
+  type="range"
+  min="1"
+  max="50"
+  step="0.1"
+  value={carSize}
+  onChange={(e) => setCarSize(parseFloat(e.target.value))}
+  className="hidden"
+/>
+<p className="hidden">Target Car Size: {carSize}</p>
+
       </div>
 
       {/* 3D Model Canvas with aesthetic border */}
