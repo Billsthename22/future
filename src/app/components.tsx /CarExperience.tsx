@@ -6,6 +6,7 @@ import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
 import { Orbitron } from "next/font/google";
 import { motion } from "framer-motion";
 import * as THREE from "three";
+import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
 
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
@@ -40,37 +41,41 @@ McLarenModel.displayName = "McLarenModel";
 
 useGLTF.preload("/models/Mclaren/scene.gltf");
 
-// ✅ Fit camera to object
 function FitCameraToObject({ objectRef }: { objectRef: React.RefObject<THREE.Group | null> }) {
-  const { camera } = useThree();
-
-  useEffect(() => {
-    if (!objectRef.current) return;
-
-    const bbox = new THREE.Box3().setFromObject(objectRef.current);
-    const size = new THREE.Vector3();
-    bbox.getSize(size);
-    const center = new THREE.Vector3();
-    bbox.getCenter(center);
-
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = camera.fov * (Math.PI / 180);
-    let distance = maxDim / (2 * Math.tan(fov / 2));
-    distance *= 1.5; // padding
-
-    camera.position.set(center.x, center.y + size.y / 2, center.z + distance);
-    camera.lookAt(center);
-    camera.updateProjectionMatrix();
-  }, [camera, objectRef]);
-
-  return null;
-}
+    const { camera } = useThree();
+  
+    useEffect(() => {
+      if (!objectRef.current) return;
+  
+      const bbox = new THREE.Box3().setFromObject(objectRef.current);
+      const size = new THREE.Vector3();
+      bbox.getSize(size);
+      const center = new THREE.Vector3();
+      bbox.getCenter(center);
+  
+      const maxDim = Math.max(size.x, size.y, size.z);
+  
+      // ✅ Ensure camera is PerspectiveCamera
+      const perspectiveCamera = camera as THREE.PerspectiveCamera;
+  
+      const fov = perspectiveCamera.fov * (Math.PI / 180);
+      let distance = maxDim / (2 * Math.tan(fov / 2));
+      distance *= 1.5; // padding
+  
+      perspectiveCamera.position.set(center.x, center.y + size.y / 2, center.z + distance);
+      perspectiveCamera.lookAt(center);
+      perspectiveCamera.updateProjectionMatrix();
+    }, [camera, objectRef]);
+  
+    return null;
+  }
+  
 
 // ✅ Main CarExperience Component
 export default function CarExperience() {
   const [carSize, setCarSize] = useState(20);
   const carRef = useRef<THREE.Group | null>(null);
-  const controlsRef = useRef<any>(null);
+  const controlsRef = useRef<ThreeOrbitControls>(null);
 
   // Log model size on zoom/rotate/pan
   useEffect(() => {
