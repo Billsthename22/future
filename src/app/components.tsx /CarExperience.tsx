@@ -97,64 +97,66 @@ export default function CarExperience() {
 
   return (
     <section className="relative w-full h-screen bg-black flex flex-col items-center justify-center overflow-hidden">
-      {/* Background overlays */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.2),transparent_70%)]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent" />
+    {/* Background overlays */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,0,0,0.2),transparent_70%)]" />
+    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent" />
+  
+    {/* Header text centered vertically and horizontally */}
+    <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
+    <motion.h2
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className={`text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-wider uppercase ${orbitron.className}`}
+>
+  <span className="text-white">The </span>
+  <span className="text-red-600">Car Experience</span>
+</motion.h2>
 
-      {/* Header text */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className={`text-4xl md:text-6xl font-extrabold mb-6 tracking-wider uppercase ${orbitron.className}`}
-        >
-          The <span className="text-red-600">The Car Experience</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className={`text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed ${orbitron.className}`}
-        >
+  
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+        className={`text-gray-400 max-w-3xl leading-relaxed`}
+      >
         Interact with lifelike 3D models of our next-generation supercars. Rotate, explore, and feel the adrenaline — all from your screen.
-        </motion.p>
-
-        {/* Slider */}
-        <input
-  type="range"
-  min="1"
-  max="50"
-  step="0.1"
-  value={carSize}
-  onChange={(e) => setCarSize(parseFloat(e.target.value))}
-  className="hidden"
-/>
-<p className="hidden">Target Car Size: {carSize}</p>
-
-      </div>
-
-      {/* 3D Model Canvas with aesthetic border */}
-      <div className="relative w-full max-w-5xl h-96 md:h-[28rem] bg-gradient-to-b from-gray-900 to-black rounded-3xl border border-red-800/30 flex items-center justify-center shadow-[0_0_30px_rgba(255,0,0,0.3)]">
-        <Canvas shadows className="w-full h-full rounded-3xl">
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} />
-          <Suspense fallback={null}>
-            <McLarenModel ref={carRef} targetSize={carSize} />
-            <FitCameraToObject objectRef={carRef} />
-            <Environment preset="night" />
-            <OrbitControls
-              ref={controlsRef}
-              enableZoom
-              maxDistance={100}
-              minDistance={5}
-              autoRotate
-              autoRotateSpeed={1}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
-    </section>
+      </motion.p>
+  
+      {/* Hidden slider (optional) */}
+      <input
+        type="range"
+        min="1"
+        max="50"
+        step="0.1"
+        value={carSize}
+        onChange={(e) => setCarSize(parseFloat(e.target.value))}
+        className="hidden"
+      />
+      <p className="hidden">Target Car Size: {carSize}</p>
+    </div>
+  
+    {/* 3D Model Canvas */}
+    <div className="relative w-full max-w-5xl h-96 md:h-[28rem] bg-gradient-to-b from-gray-900 to-black rounded-3xl border border-red-800/30 flex items-center justify-center shadow-[0_0_30px_rgba(255,0,0,0.3)] mt-8">
+      <Canvas shadows className="w-full h-full rounded-3xl">
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+        <Suspense fallback={null}>
+          <McLarenModel ref={carRef} targetSize={carSize} />
+          <FitCameraToObject objectRef={carRef} />
+          <Environment preset="night" />
+          <OrbitControls
+            ref={controlsRef}
+            enableZoom
+            maxDistance={100}
+            minDistance={5}
+            autoRotate
+            autoRotateSpeed={1}
+          />
+        </Suspense>
+      </Canvas>
+    </div>
+  </section>
+  
   );
 }

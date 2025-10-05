@@ -12,10 +12,10 @@ export default function HistoryLegacy() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
 
   const milestones = [
-    { year: '1980s', text: 'The Era of Raw Power', img: '/history/80s.jpg' },
-    { year: '1990s', text: 'Turbocharged Dreams', img: '/history/90s.jpg' },
-    { year: '2000s', text: 'Precision Engineering', img: '/history/2000s.jpg' },
-    { year: '2020s', text: 'Electric Innovation', img: '/history/2020s.jpg' },
+    { year: '1980s', text: 'The Era of Raw Power', img: '/1990s.jpg' },
+    { year: '1990s', text: 'Turbocharged Dreams', img: '/supercar.jpg' },
+    { year: '2000s', text: 'Precision Engineering', img: '/engineering.jpg' },
+    { year: '2020s', text: 'Electric Innovation', img: '/electronicvehicle.jpg' },
   ];
 
   return (
