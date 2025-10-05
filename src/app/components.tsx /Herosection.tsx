@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
-// ✅ Smoke particles
+// Smoke particles
 const SmokeParticles = ({ active }: { active: boolean }) => {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -26,11 +26,7 @@ const SmokeParticles = ({ active }: { active: boolean }) => {
 
         material.opacity -= 0.001;
         if (material.opacity <= 0) {
-          mesh.position.set(
-            (Math.random() - 0.5) * 10,
-            -2,
-            (Math.random() - 0.5) * 10
-          );
+          mesh.position.set((Math.random() - 0.5) * 10, -2, (Math.random() - 0.5) * 10);
           material.opacity = 0.3 + Math.random() * 0.2;
         }
       }
@@ -49,7 +45,7 @@ const SmokeParticles = ({ active }: { active: boolean }) => {
   );
 };
 
-// ✅ Ferrari entrance
+// Ferrari model
 const Ferrari = ({
   carRef,
   onReachedFront,
@@ -68,57 +64,19 @@ const Ferrari = ({
       if (progress >= 1) onReachedFront();
     }
   });
-  const Ferrari = ({
-    carRef,
-    onReachedFront,
-  }: {
-    carRef: React.RefObject<THREE.Group | null>;
-    onReachedFront: () => void;
-  }) => {
-    const { scene } = useGLTF("/models/ferrari/scene.gltf");
-    const startTime = useRef(performance.now());
-  
-    useFrame(() => {
-      if (carRef.current) {
-        const elapsed = (performance.now() - startTime.current) / 1000;
-        const progress = Math.min(elapsed / 2, 1); // animation duration 2s
-        carRef.current.position.z = THREE.MathUtils.lerp(5, 0, progress);
-  
-        if (progress >= 1) {
-          // ✅ Log bounding box size once car reaches the front
-          const bbox = new THREE.Box3().setFromObject(carRef.current);
-          const size = new THREE.Vector3();
-          bbox.getSize(size);
-          console.log("📏 Ferrari final size:", size);
-  
-          onReachedFront();
-        }
-      }
-    });
-  
-    return (
-      <primitive
-        ref={carRef}
-        object={scene}
-        scale={1.5}           // keep your current scale
-        position={[0, -0.5, 5]} // current position
-        rotation={[0, Math.PI, 0]} // current rotation
-      />
-    );
-  };
-  
+
   return (
     <primitive
       ref={carRef}
       object={scene}
-      scale={1.5}
+      scale={window.innerWidth < 768 ? 1 : 1.5} // scale smaller on mobile
       position={[0, -0.5, 5]}
       rotation={[0, Math.PI, 0]}
     />
   );
 };
 
-// ✅ Headlights
+// Headlights
 const Headlights = ({ active }: { active: boolean }) =>
   active ? (
     <>
@@ -135,7 +93,7 @@ const Headlights = ({ active }: { active: boolean }) =>
     </>
   ) : null;
 
-// ✅ Static camera
+// Static camera
 const StaticCamera = () => {
   const { camera } = useThree();
   useEffect(() => {
@@ -146,7 +104,7 @@ const StaticCamera = () => {
   return null;
 };
 
-// ✅ HeroSection main
+// HeroSection
 const HeroSection = () => {
   const carRef = useRef<THREE.Group | null>(null);
   const [lightsOn, setLightsOn] = useState(false);
@@ -160,16 +118,12 @@ const HeroSection = () => {
     <section className="relative h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none" />
 
-      {/* Text overlay with animation */}
-      <div className="absolute top-24 text-center z-10 px-4">
-        <h1
-          className={`text-5xl md:text-7xl font-extrabold text-white uppercase tracking-wide ${orbitron.className}`}
-        >
+      {/* Text overlay */}
+      <div className="absolute top-24 text-center z-10 px-4 md:px-0">
+        <h1 className={`text-4xl sm:text-5xl md:text-7xl font-extrabold text-white uppercase tracking-wide ${orbitron.className}`}>
           The Future of <span className="text-red-600">Speed</span>
         </h1>
-        <p
-          className={`mt-4 text-gray-400 text-sm md:text-lg max-w-xl mx-auto ${orbitron.className}`}
-        >
+        <p className={`mt-4 text-gray-400 text-xs sm:text-sm md:text-lg max-w-xs sm:max-w-md md:max-w-xl mx-auto ${orbitron.className}`}>
           A revolutionary electric supercar built for performance, elegance, and innovation.
         </p>
 
@@ -180,7 +134,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               onClick={handleScrollToCars}
-              className="mt-8 px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold tracking-wide transition"
+              className="mt-8 px-6 sm:px-8 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold tracking-wide transition text-sm sm:text-base"
             >
               Explore Cars
             </motion.button>
@@ -189,7 +143,7 @@ const HeroSection = () => {
       </div>
 
       {/* 3D Scene */}
-      <Canvas camera={{ fov: 35 }}>
+      <Canvas camera={{ fov: window.innerWidth < 768 ? 45 : 35 }} className="w-full h-full">
         <StaticCamera />
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={1.2} />
@@ -197,14 +151,7 @@ const HeroSection = () => {
         <Suspense fallback={null}>
           <Ferrari carRef={carRef} onReachedFront={() => setLightsOn(true)} />
           {lightsOn && (
-            <spotLight
-              position={[0, 10, 10]}
-              angle={0.25}
-              penumbra={0.7}
-              intensity={8}
-              distance={40}
-              castShadow
-            />
+            <spotLight position={[0, 10, 10]} angle={0.25} penumbra={0.7} intensity={8} distance={40} castShadow />
           )}
           <Headlights active={lightsOn} />
           <SmokeParticles active={lightsOn} />
