@@ -1,21 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 export default function GlassNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [brandsOpen, setBrandsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const brands = ['Ferrari', 'Lamborghini', 'Porsche', 'McLaren'];
 
+  // Close brands dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setBrandsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <nav
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl
-      rounded-2xl backdrop-blur-lg bg-white/10 border border-cyan-500/30
-      shadow-[0_0_25px_rgba(0,255,255,0.4)] px-6 py-3 flex justify-between items-center"
-    >
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-2xl backdrop-blur-lg bg-white/10 border border-cyan-500/30 shadow-[0_0_25px_rgba(0,255,255,0.4)] px-6 py-3 flex justify-between items-center">
       {/* Logo */}
       <div className="text-cyan-400 font-bold text-xl tracking-widest">FUTURE</div>
 
@@ -26,7 +34,7 @@ export default function GlassNav() {
         <Link href="/inventory" className="hover:text-cyan-300 transition">Inventory</Link>
 
         {/* Brands Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setBrandsOpen(!brandsOpen)}
             className="flex items-center gap-1 hover:text-cyan-300 transition"
