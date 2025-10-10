@@ -19,7 +19,7 @@ export default function GlassNav() {
         <Link href="/" className="hover:text-cyan-300 transition">Home</Link>
         <Link href="/about" className="hover:text-cyan-300 transition">About</Link>
         <Link href="/inventory" className="hover:text-cyan-300 transition">Inventory</Link>
-        <Link href="/Brands" className="hover:text-cyan-300 transition">Brands</Link>
+        <Link href="/brands" className="hover:text-cyan-300 transition">Rrands</Link>
         <Link href="/contact" className="hover:text-cyan-300 transition">Contact</Link>
       </div>
 

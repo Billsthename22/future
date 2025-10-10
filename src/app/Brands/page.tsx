@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import GlassNav from '../components.tsx /Glassnav'; // ✅ fixed import path
+import GlassNav from '@/app/components.tsx /Glassnav'; // ✅ fixed import path
+import Link from 'next/link';
 
 const carBrands = [
   { name: 'Acura', logo: '/brands/acura.png' },
@@ -223,36 +224,40 @@ export default function BrandCollection() {
 
         {/* Brand Grid */}
         <motion.div
-          layout
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative z-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 max-w-7xl"
-        >
-          {currentBrands.map((brand, index) => (
-            <motion.div
-              key={brand.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.02 }}
-              className="group relative bg-gradient-to-b from-gray-900/90 to-black/90 rounded-xl p-6 flex flex-col items-center justify-center hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(255,215,0,0.05)] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] border border-gray-800"
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-yellow-500/10 to-transparent rounded-xl"></div>
-              <div className="relative w-24 h-24 mb-3">
-                <Image
-                  src={brand.logo}
-                  alt={brand.name}
-                  fill
-                  className="object-contain opacity-80 group-hover:opacity-100 transition"
-                />
-              </div>
-              <p className="font-semibold text-gray-300 group-hover:text-yellow-400 tracking-wide">
-                {brand.name}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
+  layout
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="relative z-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 max-w-7xl"
+>
+  {currentBrands.map((brand, index) => (
+    <motion.div
+      key={brand.name}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.02 }}
+    >
+      <Link
+        href={`/models/${brand.name.toLowerCase().replace(/\s+/g, '-')}`}
+        className="group relative bg-gradient-to-b from-gray-900/90 to-black/90 rounded-xl p-6 flex flex-col items-center justify-center hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(255,215,0,0.05)] hover:shadow-[0_0_30px_rgba(255,215,0,0.3)] border border-gray-800"
+      >
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-yellow-500/10 to-transparent rounded-xl"></div>
+        <div className="relative w-24 h-24 mb-3">
+          <Image
+            src={brand.logo}
+            alt={brand.name}
+            fill
+            className="object-contain opacity-80 group-hover:opacity-100 transition"
+          />
+        </div>
+        <p className="font-semibold text-gray-300 group-hover:text-yellow-400 tracking-wide">
+          {brand.name}
+        </p>
+      </Link>
+    </motion.div>
+  ))}
+</motion.div>
 
         {/* Pagination Controls */}
         <div className="relative z-10 mt-12 flex items-center gap-4">
