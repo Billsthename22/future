@@ -1,22 +1,27 @@
 import fs from "fs";
 import path from "path";
 
-// ✅ Absolute paths inside your project
-const carsPath = path.join(process.cwd(), "app/data/cars.json");
-const groupedPath = path.join(process.cwd(), "app/data/groupedcars.json");
+// ✅ Absolute paths based on your folder structure
+const filePath = path.join(process.cwd(), "src/app/data/groupedcars.json");
 
-// Load the raw cars.json
-const cars = JSON.parse(fs.readFileSync(carsPath, "utf8"));
+// ✅ Read JSON
+const raw = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
-// Group cars by their actual brand
-const grouped = cars.reduce((acc, car) => {
-  const brand = car.brand?.trim() || "Unknown"; // Use real brand name
+// ✅ Extract array inside "Brand"
+const carsArray = raw.Brand || [];
+
+// ✅ Infer brand name from car name
+const getBrand = (car) => car.name?.split(" ")[0] || "Unknown";
+
+// ✅ Group cars by brand
+const grouped = carsArray.reduce((acc, car) => {
+  const brand = getBrand(car);
   if (!acc[brand]) acc[brand] = [];
   acc[brand].push(car);
   return acc;
 }, {});
 
-// Save the new grouped JSON
-fs.writeFileSync(groupedPath, JSON.stringify(grouped, null, 2), "utf8");
+// ✅ Overwrite groupedcars.json with new grouped data
+fs.writeFileSync(filePath, JSON.stringify(grouped, null, 2), "utf8");
 
-console.log("✅ groupedcars.json created successfully!");
+console.log("✅ groupedcars.json updated successfully!");
