@@ -41,13 +41,16 @@ export default function BrandModels() {
       {models.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {models.map((model) => (
-            <Link
-              key={model.name}
-              href={`/brands/${brandKey.toLowerCase().replace(/\s+/g, '-')}/${model.name
-                .toLowerCase()
-                .replace(/\s+/g, '-')}`}
-              className="bg-gray-900 p-4 sm:p-6 rounded-xl border border-gray-800 hover:border-yellow-500 hover:scale-105 transition flex flex-col items-center"
-            >
+         <Link
+         key={model.name}
+         href={`/brands/${encodeURIComponent(
+           brandKey.toLowerCase().replace(/\s+/g, '-')
+         )}/${encodeURIComponent(
+           model.name.toLowerCase().replace(/\s+/g, '-')
+         )}`}
+         className="bg-gray-900 p-4 sm:p-6 rounded-xl border border-gray-800 hover:border-yellow-500 hover:scale-105 transition flex flex-col items-center"
+       >
+       
               <div className="relative w-full h-48 mb-4">
                 <Image
                   src={model.image}

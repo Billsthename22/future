@@ -17,7 +17,7 @@ export default function GlassNav() {
       {/* Desktop Links */}
       <div className="hidden md:flex gap-8 text-white font-medium items-center">
         <Link href="/" className="hover:text-cyan-300 transition">Home</Link>
-        <Link href="/about" className="hover:text-cyan-300 transition">About</Link>
+        <Link href="/About" className="hover:text-cyan-300 transition">About</Link>
         <Link href="/inventory" className="hover:text-cyan-300 transition">Inventory</Link>
         <Link href="/brands" className="hover:text-cyan-300 transition">Brands</Link>
         <Link href="/contact" className="hover:text-cyan-300 transition">Contact</Link>
@@ -34,7 +34,7 @@ export default function GlassNav() {
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-black/90 backdrop-blur-lg flex flex-col items-center gap-6 py-6 md:hidden rounded-b-2xl mt-2 border border-cyan-500/30">
           <Link href="/" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Home</Link>
-          <Link href="/about" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>About</Link>
+          <Link href="/About" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>About</Link>
           <Link href="/inventory" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Inventory</Link>
           <Link href="/brands" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Brands</Link>
           <Link href="/contact" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Contact</Link>
