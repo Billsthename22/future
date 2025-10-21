@@ -19,7 +19,7 @@ export default function GlassNav() {
         <Link href="/" className="hover:text-cyan-300 transition">Home</Link>
         <Link href="/About" className="hover:text-cyan-300 transition">About</Link>
         <Link href="/inventory" className="hover:text-cyan-300 transition">Inventory</Link>
-        <Link href="/brands" className="hover:text-cyan-300 transition">Brands</Link>
+        <Link href="/Brands" className="hover:text-cyan-300 transition">Brands</Link>
         <Link href="/contact" className="hover:text-cyan-300 transition">Contact</Link>
       </div>
 
@@ -36,7 +36,7 @@ export default function GlassNav() {
           <Link href="/" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Home</Link>
           <Link href="/About" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>About</Link>
           <Link href="/inventory" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Inventory</Link>
-          <Link href="/brands" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Brands</Link>
+          <Link href="/Brands" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Brands</Link>
           <Link href="/contact" className="text-white text-lg font-medium hover:text-cyan-300" onClick={() => setIsOpen(false)}>Contact</Link>
         </div>
       )}
