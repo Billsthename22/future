@@ -1,0 +1,11 @@
+Model Information:
+* title:	2017 Acura NSX (F7LTHY) LB★PERFORMANCE Body Kit
+* source:	https://sketchfab.com/3d-models/2017-acura-nsx-f7lthy-lbperformance-body-kit-9b8fde21ba464b0c911cab8e41800486
+* author:	Ddiaz Design (https://sketchfab.com/ddiaz-design)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2017 Acura NSX (F7LTHY) LB★PERFORMANCE Body Kit" (https://sketchfab.com/3d-models/2017-acura-nsx-f7lthy-lbperformance-body-kit-9b8fde21ba464b0c911cab8e41800486) by Ddiaz Design (https://sketchfab.com/ddiaz-design) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

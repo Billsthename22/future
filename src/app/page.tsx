@@ -1,20 +1,19 @@
 'use client';
 
-import GlassNav from '@/app/components.tsx /Glassnav';
-import HeroSection from '@/app/components.tsx /Herosection';
-import FeaturedCars from './components.tsx /Features';
-import HistoryLegacy from './components.tsx /History';
-import CarExperience from './components.tsx /CarExperience';
-import SoundExperience from './components.tsx /SoundExperience';
-import LifestyleCulture from './components.tsx /Lifestyle';
-import NewsletterJoin from './components.tsx /Newsletter';
-import Footer from './components.tsx /Footer';
+import GlassNav from '@/app/components/Glassnav';
+import HeroSection from '@/app/components/Herosection';
+import FeaturedCars from './components/Features';
+import HistoryLegacy from './components/History';
+import CarExperience from './components/CarExperience';
+import SoundExperience from './components/SoundExperience';
+import LifestyleCulture from './components/Lifestyle';
+import NewsletterJoin from './components/Newsletter';
+import Footer from './components/Footer';
 export default function Home() {
   return (
     <main className="bg-white text-black relative min-h-screen">
       {/* NAVBAR */}
       <GlassNav />
-
       {/* HERO SECTION */}
       <HeroSection />
 
@@ -22,7 +21,7 @@ export default function Home() {
 
       <HistoryLegacy/>
 
-      <CarExperience/>
+   <CarExperience/>
 
 <SoundExperience/>
 

@@ -1,0 +1,11 @@
+Model Information:
+* title:	1997 Acura NSX
+* source:	https://sketchfab.com/3d-models/1997-acura-nsx-2dd15713c04d4f399e6953f3bb0e96a4
+* author:	OUTPISTON (https://sketchfab.com/outpiston)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "1997 Acura NSX" (https://sketchfab.com/3d-models/1997-acura-nsx-2dd15713c04d4f399e6953f3bb0e96a4) by OUTPISTON (https://sketchfab.com/outpiston) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

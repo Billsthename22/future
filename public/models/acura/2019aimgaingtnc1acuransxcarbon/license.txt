@@ -1,0 +1,11 @@
+Model Information:
+* title:	2019 AIMGAIN GT NC1 Acura NSX Carbon
+* source:	https://sketchfab.com/3d-models/2019-aimgain-gt-nc1-acura-nsx-carbon-23c64ae71bbe4e55b6b1e8b82933d97d
+* author:	Ddiaz Design (https://sketchfab.com/ddiaz-design)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2019 AIMGAIN GT NC1 Acura NSX Carbon" (https://sketchfab.com/3d-models/2019-aimgain-gt-nc1-acura-nsx-carbon-23c64ae71bbe4e55b6b1e8b82933d97d) by Ddiaz Design (https://sketchfab.com/ddiaz-design) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
