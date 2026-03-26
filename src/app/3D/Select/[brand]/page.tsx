@@ -9,16 +9,15 @@ import { motion, AnimatePresence } from "framer-motion";
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["400", "900"] });
 
 const displayCars = [ 
-  { id: "1991acuransxtwinturbo", brandId: "acura", name: "Acura NSX Twin Turbo", year: "1991", hp: 471 }, 
-  { id: "1997acuransx", brandId: "acura", name: "Acura NSX", year: "1997", hp: 290 }, 
-  { id: "acuraarx", brandId: "acura", name: "Acura ARX-06", year: "2023", hp: 670 },
-  { id: "2017acuransx", brandId: "acura", name: "Acura NSX (NC1)", year: "2017", hp: 573 }, 
-  { id: "2020acuransx", brandId: "acura", name: "Acura NSX (Gen 2)", year: "2020", hp: 573 }, 
-  { id: "2022acuransxtypes", brandId: "acura", name: "Acura NSX Type S", year: "2022", hp: 600 },
+  {id: "1991acuransxtwinturbo", brandId: "acura", name: "Acura NSX Twin Turbo", year: "1991", hp: 471 }, 
+  {id: "1997acuransx", brandId: "acura", name: "Acura NSX", year: "1997", hp: 290 }, 
+  {id: "acuraarx", brandId: "acura", name: "Acura ARX-06", year: "2023", hp: 670 },
+  {id: "2017acuransx", brandId: "acura", name: "Acura NSX (NC1)", year: "2017", hp: 573 }, 
+  {id: "2020acuransx", brandId: "acura", name: "Acura NSX (Gen 2)", year: "2020", hp: 573 }, 
+  {id: "2022acuransxtypes", brandId: "acura", name: "Acura NSX Type S", year: "2022", hp: 600 },
   {id:"2019aimgaingtnc1acuransxcarbon", brandId:"acura", name:"2019 AIMGAIN GT NC1 Acura NSX Carbon", year:"2019", hp:573},
   {id:"2018acuransxgt3", brandId:"acura", name:"2018 Acura NSX GT3", year:"2018", hp:500},
   {id:"2008acura15lowesfernandezarx01b", brandId:"acura", name:"2008 Acura 15 lowes fernandez ARX 01b", year:"2020", hp:600},
-
 ];
 const CornerAccent = ({ className }: { className?: string }) => (
   <div className={`absolute w-3 h-3 border-red-600/80 ${className}`} />
