@@ -1,0 +1,310 @@
+<!-- Car Chatbot Widget — include near the closing </body> tag of your base template:
+     {% include "chatbot/widget.html" %} -->
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  #cc-root {
+    --cc-bg: #14161a;
+    --cc-panel: #1d2025;
+    --cc-panel-raised: #23262c;
+    --cc-border: #33373f;
+    --cc-text: #e7e9ec;
+    --cc-text-dim: #8b919b;
+    --cc-accent: #00d8c0;
+    --cc-accent-dim: #0a3d38;
+    --cc-user-bubble: #2a2f37;
+    --cc-font-display: 'Rajdhani', sans-serif;
+    --cc-font-body: 'Inter', sans-serif;
+    --cc-font-mono: 'JetBrains Mono', monospace;
+
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    font-family: var(--cc-font-body);
+  }
+
+  #cc-launcher {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #2b2f36, var(--cc-panel) 70%);
+    border: 2px solid var(--cc-border);
+    box-shadow: 0 0 0 0 rgba(0,216,192,0.4), 0 4px 16px rgba(0,0,0,0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  #cc-launcher:hover { transform: scale(1.05); }
+  #cc-launcher::before {
+    content: "";
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--cc-accent);
+    box-shadow: 0 0 8px var(--cc-accent);
+  }
+  #cc-launcher.cc-pulse {
+    animation: cc-headlight 2.4s ease-in-out infinite;
+  }
+  @keyframes cc-headlight {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,216,192,0.35), 0 4px 16px rgba(0,0,0,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(0,216,192,0), 0 4px 16px rgba(0,0,0,0.4); }
+  }
+
+  #cc-panel {
+    display: none;
+    flex-direction: column;
+    width: 360px;
+    height: 520px;
+    background: var(--cc-bg);
+    border: 1px solid var(--cc-border);
+    border-radius: 14px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 76px;
+    right: 0;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  #cc-panel.cc-open { display: flex; }
+
+  #cc-header {
+    padding: 14px 16px;
+    background: linear-gradient(180deg, var(--cc-panel-raised), var(--cc-panel));
+    border-bottom: 1px solid var(--cc-border);
+    position: relative;
+  }
+  #cc-header::after {
+    content: "";
+    position: absolute;
+    left: 16px; right: 16px; bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cc-accent), transparent 70%);
+    opacity: 0.6;
+  }
+  #cc-eyebrow {
+    font-family: var(--cc-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--cc-accent);
+    text-transform: uppercase;
+  }
+  #cc-title {
+    font-family: var(--cc-font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.02em;
+    color: var(--cc-text);
+    margin-top: 2px;
+  }
+  #cc-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: none; border: none;
+    color: var(--cc-text-dim);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  #cc-close:hover { color: var(--cc-text); }
+
+  #cc-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  #cc-messages::-webkit-scrollbar { width: 6px; }
+  #cc-messages::-webkit-scrollbar-thumb { background: var(--cc-border); border-radius: 3px; }
+
+  .cc-msg {
+    max-width: 84%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--cc-text);
+    animation: cc-rise 0.2s ease;
+  }
+  @keyframes cc-rise {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cc-msg.user {
+    align-self: flex-end;
+    background: var(--cc-user-bubble);
+    border: 1px solid var(--cc-border);
+    border-bottom-right-radius: 3px;
+  }
+  .cc-msg.bot {
+    align-self: flex-start;
+    background: var(--cc-panel-raised);
+    border-left: 2px solid var(--cc-accent);
+    border-bottom-left-radius: 3px;
+  }
+
+  #cc-typing {
+    align-self: flex-start;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    font-family: var(--cc-font-mono);
+    font-size: 11px;
+    color: var(--cc-text-dim);
+  }
+  #cc-typing.cc-show { display: flex; }
+  #cc-needle {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--cc-border);
+    position: relative;
+    flex-shrink: 0;
+  }
+  #cc-needle::before {
+    content: "";
+    position: absolute;
+    top: 1px; left: 50%;
+    width: 2px; height: 6px;
+    background: var(--cc-accent);
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    animation: cc-sweep 1s ease-in-out infinite;
+  }
+  @keyframes cc-sweep {
+    0%, 100% { transform: translateX(-50%) rotate(-40deg); }
+    50% { transform: translateX(-50%) rotate(40deg); }
+  }
+
+  #cc-inputbar {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--cc-border);
+    background: var(--cc-panel);
+  }
+  #cc-input {
+    flex: 1;
+    background: var(--cc-bg);
+    border: 1px solid var(--cc-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--cc-text);
+    font-family: var(--cc-font-body);
+    font-size: 14px;
+    outline: none;
+  }
+  #cc-input:focus { border-color: var(--cc-accent); }
+  #cc-send {
+    background: var(--cc-accent-dim);
+    border: 1px solid var(--cc-accent);
+    color: var(--cc-accent);
+    font-family: var(--cc-font-display);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: 8px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  #cc-send:hover { background: rgba(0,216,192,0.18); }
+  #cc-send:disabled { opacity: 0.5; cursor: default; }
+
+  @media (max-width: 420px) {
+    #cc-panel { width: calc(100vw - 32px); right: -8px; }
+  }
+</style>
+
+<div id="cc-root">
+  <div id="cc-panel" role="dialog" aria-label="Car assistant chat">
+    <div id="cc-header">
+      <div id="cc-eyebrow">ON-BOARD ASSISTANT</div>
+      <div id="cc-title">Ask about any car</div>
+      <button id="cc-close" aria-label="Close chat">&times;</button>
+    </div>
+    <div id="cc-messages">
+      <div class="cc-msg bot">Make, model, trim, history — ask me anything about a car and I'll pull up what I know.</div>
+    </div>
+    <div id="cc-typing"><div id="cc-needle"></div>reading the gauges…</div>
+    <div id="cc-inputbar">
+      <input id="cc-input" type="text" placeholder="e.g. Is the 2015 Golf GTI reliable?" autocomplete="off" />
+      <button id="cc-send">SEND</button>
+    </div>
+  </div>
+  <button id="cc-launcher" class="cc-pulse" aria-label="Open car assistant"></button>
+</div>
+
+<script>
+(function () {
+  const CHAT_ENDPOINT = "/api/chat/"; // adjust if you mount the app under a different prefix
+
+  const root = document.getElementById("cc-root");
+  const launcher = document.getElementById("cc-launcher");
+  const panel = document.getElementById("cc-panel");
+  const closeBtn = document.getElementById("cc-close");
+  const messages = document.getElementById("cc-messages");
+  const typing = document.getElementById("cc-typing");
+  const input = document.getElementById("cc-input");
+  const sendBtn = document.getElementById("cc-send");
+
+  let sessionId = localStorage.getItem("cc_session_id") || null;
+
+  launcher.addEventListener("click", () => {
+    panel.classList.add("cc-open");
+    launcher.classList.remove("cc-pulse");
+    input.focus();
+  });
+  closeBtn.addEventListener("click", () => panel.classList.remove("cc-open"));
+
+  function addMessage(text, role) {
+    const el = document.createElement("div");
+    el.className = "cc-msg " + role;
+    el.textContent = text;
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+    sendBtn.disabled = true;
+    typing.classList.add("cc-show");
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const res = await fetch(CHAT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, session_id: sessionId }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        addMessage("Something stalled on my end: " + (data.error || "unknown error"), "bot");
+      } else {
+        sessionId = data.session_id;
+        localStorage.setItem("cc_session_id", sessionId);
+        addMessage(data.reply, "bot");
+      }
+    } catch (err) {
+      addMessage("Couldn't reach the server. Check your connection and try again.", "bot");
+    } finally {
+      typing.classList.remove("cc-show");
+      sendBtn.disabled = false;
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+})();
+</script>

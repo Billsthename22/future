@@ -1,0 +1,59 @@
+{
+  "greeting": [
+    "hi", "hello", "hey there", "good morning", "hey", "yo", "hiya",
+    "what's up", "morning", "hello there", "hey chatbot"
+  ],
+  "goodbye": [
+    "bye", "goodbye", "see you", "later", "that's all thanks", "gotta go",
+    "talk to you later", "i'm done", "exit", "close chat"
+  ],
+  "thanks": [
+    "thanks", "thank you", "appreciate it", "thanks a lot", "thx",
+    "that helped thanks", "cheers", "much appreciated"
+  ],
+  "ask_price": [
+    "how much is the 2018 civic", "what's the price of the mustang",
+    "price of a 2020 corolla", "how much does the model 3 cost",
+    "what's the cost on that f150", "how much for the accord",
+    "give me the price of the golf gti", "what does the camry cost",
+    "how much is a used tesla model y", "price range for the rav4"
+  ],
+  "ask_specs": [
+    "what's the horsepower on the mustang gt", "engine size of the civic type r",
+    "specs for the model 3", "what transmission does the golf gti have",
+    "how fast is the corvette", "fuel economy of the camry",
+    "what engine is in the f150", "0 to 60 time for the model s",
+    "how many seats does the rav4 have", "specs of the accord hybrid",
+    "what's under the hood of the mustang"
+  ],
+  "ask_history": [
+    "has this car been in an accident", "how many owners has this civic had",
+    "service history of the accord", "was the mustang ever crashed",
+    "accident history on the f150", "is this car a clean title",
+    "how many previous owners for the corolla", "any recalls on the model 3",
+    "maintenance records for the camry", "was this vehicle in a flood"
+  ],
+  "ask_mileage": [
+    "what's the mileage on the civic", "how many miles does the accord have",
+    "mileage of the mustang", "how much has the f150 been driven",
+    "odometer reading for the corolla", "is the mileage low on this camry"
+  ],
+  "compare_cars": [
+    "compare the civic and the corolla", "civic vs accord which is better",
+    "mustang vs camaro", "model 3 or model y which should i get",
+    "difference between civic and civic type r",
+    "f150 vs silverado", "which is better rav4 or cr-v",
+    "compare golf gti and civic type r"
+  ],
+  "general_car_question": [
+    "is the honda civic reliable", "why do people like the mustang",
+    "what's the history of the ford f150", "tell me about tesla as a company",
+    "what does awd mean", "difference between hybrid and electric cars",
+    "when did the corolla first come out", "is german engineering really better",
+    "what's a turbocharger do", "why are teslas so fast",
+    "what should i look for when buying a used car",
+    "explain what a cvt transmission is",
+    "is it worth buying an electric car in 2026",
+    "what's the most reliable car brand"
+  ]
+}

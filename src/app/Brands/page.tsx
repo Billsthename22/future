@@ -10,6 +10,8 @@ import { Search, ChevronLeft, ChevronRight, Hash, Activity } from 'lucide-react'
 
 const orbitron = Orbitron({ subsets: ['latin'], weight: ['400', '700', '900'] });
 
+const brandLogoFallback = '/placeholder-brand.svg';
+
 const carBrands = [
   { name: 'Acura', logo: '/acuralogo.png' },
   { name: 'Abarth', logo: '/abarthlogo.png' },
@@ -65,7 +67,7 @@ const carBrands = [
   { name: 'Italdesign', logo: '/Brands/italdesign.png' },
   { name: 'Jaguar', logo: '/Brands/jaguar.png' },
   { name: 'Jeep', logo: '/Brands/jeep.png' },
-  { name: 'Karma', logo: 'brands/karma.png' },
+  { name: 'Karma', logo: '/placeholder-brand.svg' },
   { name: 'Kia', logo: '/Brands/kia.png' },
   { name: 'Koenigsegg', logo: '/Brands/koenigsegg.png' },
   { name: 'Lada', logo: '/Brands/lada.png' },
@@ -75,7 +77,7 @@ const carBrands = [
   { name: 'Lexus', logo: '/Brands/lexus.png' },
   { name: 'Li Auto', logo: '/Brands/liauto.png' },
   { name: 'Lightyear', logo: '/Brands/lightyear.png' },
-  { name: 'Lincoln', logo: 'Brands/lincoln.png' },
+  { name: 'Lincoln', logo: '/placeholder-brand.svg' },
   { name: 'Local Motors', logo: '/Brands/localmotors.png' },
   { name: 'Lotus', logo: '/Brands/lotus.png' },
   { name: 'Lucid', logo: '/Brands/lucid.png' },
@@ -129,10 +131,16 @@ const carBrands = [
   { name: 'Volvo', logo: '/Brands/volvo.png' },
   { name: 'W Motors', logo: '/Brands/wmotors.png' },
   { name: 'Wey', logo: '/Brands/wey.png' },
-  { name: 'XPeng', logo: 'Brands/xpeng.png' },
+  { name: 'XPeng', logo: '/placeholder-brand.svg' },
   { name: 'Yugo', logo: '/Brands/yugo.png' },
-  { name: 'Zenvo', logo: 'Brands/zenvo.png' },
-];
+  { name: 'Zenvo', logo: '/placeholder-brand.svg' },
+].map((brand) => ({
+  ...brand,
+  logo:
+    brand.logo?.startsWith('/Brands/') || brand.logo?.startsWith('Brands/')
+      ? brandLogoFallback
+      : brand.logo || brandLogoFallback,
+}));
 
 export default function BrandCollection() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -240,9 +248,10 @@ export default function BrandCollection() {
 
                     <div className="relative w-20 h-20 mb-4 transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-110">
                       <Image
-                        src={brand.logo}
+                        src={brand.logo || brandLogoFallback}
                         alt={brand.name}
                         fill
+                        unoptimized={brand.logo === brandLogoFallback}
                         className="object-contain opacity-30 group-hover:opacity-100 transition-opacity"
                       />
                     </div>

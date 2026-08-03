@@ -9,6 +9,8 @@ import SoundExperience from './components/SoundExperience';
 import LifestyleCulture from './components/Lifestyle';
 import NewsletterJoin from './components/Newsletter';
 import Footer from './components/Footer';
+import ChatWidget from './components/ChatWidget';
+
 export default function Home() {
   return (
     <main className="bg-white text-black relative min-h-screen">
@@ -30,6 +32,7 @@ export default function Home() {
 <NewsletterJoin/>
 
 <Footer/>
+      <ChatWidget />
     </main>
   );
 }
