@@ -16,7 +16,6 @@ Produces:
 """
 import json
 import os
-
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -26,7 +25,6 @@ from sklearn.model_selection import cross_val_score
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(HERE, "intents_training_data.json")
 MODEL_PATH = os.path.join(HERE, "intent_model.joblib")
-
 
 def load_training_data():
     with open(DATA_PATH) as f:
@@ -38,7 +36,6 @@ def load_training_data():
             texts.append(example)
             labels.append(intent)
     return texts, labels
-
 
 def main():
     texts, labels = load_training_data()
@@ -57,7 +54,6 @@ def main():
     pipeline.fit(texts, labels)
     joblib.dump(pipeline, MODEL_PATH)
     print(f"Saved model to {MODEL_PATH}")
-
 
 if __name__ == "__main__":
     main()
